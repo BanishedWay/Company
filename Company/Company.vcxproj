@@ -142,7 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyFunction.cpp" />
-    <ClCompile Include="源.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

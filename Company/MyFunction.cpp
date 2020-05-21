@@ -1,7 +1,7 @@
 ﻿#include "MyFunction.h"
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 BiTree CreatNode(TElemType ch)
 {
@@ -11,21 +11,22 @@ BiTree CreatNode(TElemType ch)
 	p->data = ch;
 	p->lchild = NULL;
 	p->rchild = NULL;
-	p->tempchild = NULL;
 	p->parent = NULL;
 	p->l = false;
 	p->r = false;
-	p->flag = false;
 	return p;
 }
 
-void Print(BiTree& T)
+void Print(BiTree& T, int i)
 {
+	int t = i;
 	if (!T)
 		return;
+	while (t--)
+		printf("+");
 	printf("%s\n", T->data);
-	Print(T->lchild);
-	Print(T->rchild);
+	Print(T->lchild, i + 1);
+	Print(T->rchild, i + 1);
 }
 
 void AddNode(BiTree& T, TElemType employer, TElemType employee)
@@ -48,11 +49,6 @@ void AddNode(BiTree& T, TElemType employer, TElemType employee)
 			T->rchild = t;
 			T->r = true;
 		}
-		else
-		{
-			T->tempchild = t;
-			T->flag = true;
-		}
 		return;
 	}
 	AddNode(T->lchild, employer, employee);
@@ -66,6 +62,7 @@ void DeleteNode(BiTree& T, TElemType employer)
 	if (!strcmp(T->data, employer))
 	{
 		Replace(T);
+		return;
 	}
 	DeleteNode(T->lchild, employer);
 	DeleteNode(T->rchild, employer);
@@ -115,12 +112,12 @@ BiTree getNextNode(BiTree& T)
 		return NULL;
 	if (T->r)
 	{
-		return getMinNode(T->rchild);
+		return getMinNode(T->lchild);
 	}
 	else
 	{
 		BiTree p = T->parent;
-		while (p && p->rchild == T)
+		while (p && p->lchild == T)
 		{
 			T = p;
 			p = p->parent;
@@ -146,16 +143,15 @@ bool get_Value_String1(char* str1, const char* str2)
 		return true;
 	}
 	return false;
-
 }
 
 char* get_Value_String_Employee(char* str1, const char* str2)
 {
-	
+
 	char* temp = (char*)malloc(sizeof(char));
 	if (!temp)
 		return NULL;
-	int i = get_Value_String3(str1, str2), j = 0;
+	int i = get_Value_String2(str1, str2), j = 0;
 	while (j < 3)
 	{
 		*(temp + j) = *(str1 + i);
@@ -166,7 +162,7 @@ char* get_Value_String_Employee(char* str1, const char* str2)
 	return temp;
 }
 
-int get_Value_String3(char* str1, const char* str2)
+int get_Value_String2(char* str1, const char* str2)
 {
 	int flag = 0, i, j;
 	for (i = 0; i < strlen(str1); i++)
@@ -183,7 +179,17 @@ int get_Value_String3(char* str1, const char* str2)
 				flag = i + j + 1;
 		}
 	}
-	return flag ;
+	return flag;
 }
 
-
+int BiTreeDepth(BiTree& T)
+{
+	if (!T)
+		return 0;
+	else
+	{
+		int left = BiTreeDepth(T->lchild) + 1;
+		int right = BiTreeDepth(T->rchild) + 1;
+		return left > right ? left : right;
+	}
+}

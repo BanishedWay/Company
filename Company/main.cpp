@@ -30,10 +30,11 @@ int main()
 		}
 		else if (get_Value_String1(temp, "print"))
 		{
-			Print(Company);
+			Print(Company, 0);
 			printf("\n------------------------\n");
 		}
-		
+
 	}
+	system("pause");
 	return 0;
 }
